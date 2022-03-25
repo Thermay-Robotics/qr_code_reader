@@ -1,5 +1,13 @@
 # QR code reader
 
+# Install 
+
+* Go to ```cd catkin_ws/src```
+* git clone ```git clone https://github.com/Thermay-Robotics/qr_code_reader.git```
+* Then compile 
+``` cd catkin_ws``` 
+``` catkin_make ```
+
 # Commands
 
 * launch roscore
