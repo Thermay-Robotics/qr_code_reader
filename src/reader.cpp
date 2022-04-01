@@ -1,10 +1,12 @@
 #include <ros/ros.h>
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
-#include <opencv2/objdetect.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/highgui/highgui.hpp>
+
+#include <opencv/cv.h>
+#include <opencv/highgui.h>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/objdetect/objdetect.hpp>
 
 using namespace cv;
 using namespace std;
@@ -28,11 +30,12 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
     cv::Mat img_mat = cv_bridge::toCvShare(msg, "bgr8")->image;
 
 
-    cv::QRCodeDetector::QRCodeDetector qrDecoder = cv::QRCodeDetector::QRCodeDetector();
+    QRCodeDetector qrDecoder = QRCodeDetector();
 
     Mat bbox, rectifiedImage;
 
     std::string data = qrDecoder.detectAndDecode(img_mat, bbox, rectifiedImage);
+
     if(data.length()>0)
     {
       cout << "Decoded Data : " << data << endl;
@@ -61,5 +64,5 @@ int main(int argc, char **argv)
   // Change topic depending on your camera
   image_transport::Subscriber sub = it.subscribe("/camera/color/image_raw", 1, imageCallback);
   ros::spin();
-  cv::destroyWindow("display");
+  cv::destroyAllWindows();
 }
