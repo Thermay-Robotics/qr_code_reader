@@ -31,3 +31,15 @@ To know the name of your topic use ``` rostopic list``` and copy past it in src/
 ```
 rosrun qr_code_reader camera_subscriber
 ```
+
+* run qrcode reading 
+
+First you need to install zbar library ```sudo apt-get install -y zbar-tools```
+
+Then run :
+
+```
+rosrun qr_code_reader qr_reader
+```
+
+you should see the data associated to qr code(s) on the terminal.
