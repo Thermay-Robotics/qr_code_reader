@@ -2,25 +2,61 @@
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 
-#include <opencv/cv.h>
-#include <opencv/highgui.h>
-#include <opencv2/imgproc/imgproc.hpp>
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <zbar.h>
+
+#include <opencv2/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
-#include <opencv2/objdetect/objdetect.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
-using namespace cv;
 using namespace std;
+using namespace cv;
+using namespace zbar;
 
-
-void display(Mat &im, Mat &bbox)
+typedef struct
 {
-  int n = bbox.rows;
-  for(int i = 0 ; i < n ; i++)
+  string type;
+  string data;
+  vector <Point> location;
+}decodedObject;
+
+// Find and decode barcodes and QR codes
+void decode(Mat &im, vector<decodedObject>&decodedObjects)
+{
+
+  // Create zbar scanner
+  ImageScanner scanner;
+
+  // Configure scanner
+  scanner.set_config(ZBAR_QRCODE, ZBAR_CFG_ENABLE, 1);
+
+  // Convert image to grayscale
+  Mat imGray;
+  cvtColor(im, imGray,CV_BGR2GRAY);
+
+  // Wrap image data in a zbar image
+  Image image(im.cols, im.rows, "Y800", (uchar *)imGray.data, im.cols * im.rows);
+
+  // Scan the image for barcodes and QRCodes
+  int n = scanner.scan(image);
+
+  // Print results
+  for(Image::SymbolIterator symbol = image.symbol_begin(); symbol != image.symbol_end(); ++symbol)
   {
-    line(im, Point2i(bbox.at<float>(i,0),bbox.at<float>(i,1)), Point2i(bbox.at<float>((i+1) % n,0), bbox.at<float>((i+1) % n,1)), Scalar(255,0,0), 3);
+    decodedObject obj;
+
+    obj.type = symbol->get_type_name();
+    obj.data = symbol->get_data();
+
+    // Print type and data
+    cout << "Type : " << obj.type << endl;
+    cout << "Data : " << obj.data << endl << endl;
+    decodedObjects.push_back(obj);
   }
-  imshow("display", im);
 }
+
 
 
 void imageCallback(const sensor_msgs::ImageConstPtr& msg)
@@ -29,23 +65,18 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
   {
     cv::Mat img_mat = cv_bridge::toCvShare(msg, "bgr8")->image;
 
+    vector<decodedObject> decodedObjects;
 
-    QRCodeDetector qrDecoder = QRCodeDetector();
+    decode(img_mat, decodedObjects);
 
-    Mat bbox, rectifiedImage;
-
-    std::string data = qrDecoder.detectAndDecode(img_mat, bbox, rectifiedImage);
-
-    if(data.length()>0)
-    {
-      cout << "Decoded Data : " << data << endl;
-
-      display(img_mat, bbox);
-      rectifiedImage.convertTo(rectifiedImage, CV_8UC3);
-      imshow("view", rectifiedImage);
-
-      waitKey(0);
+    for(auto code : decodedObjects){
+      cout << code.data << endl;
     }
+
+    imshow("view", img_mat);
+
+    waitKey(30);
+    
   }
   catch (cv_bridge::Exception& e)
   {
@@ -58,11 +89,10 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "image_listener");
   ros::NodeHandle nh;
   cv::namedWindow("view");
-  cv::namedWindow("display");
 
   image_transport::ImageTransport it(nh);
   // Change topic depending on your camera
-  image_transport::Subscriber sub = it.subscribe("/camera/color/image_raw", 1, imageCallback);
+  image_transport::Subscriber sub = it.subscribe("/usb_cam/image_raw", 1, imageCallback);
   ros::spin();
   cv::destroyAllWindows();
 }
