@@ -34,11 +34,18 @@ rosrun qr_code_reader camera_subscriber
 
 * run qrcode reading 
 
-First you need to install zbar library ```sudo apt-get install -y zbar-tools```
+First you need to install zbar library 
+
+```
+sudo apt-get install ros-(distro)-usb-cam
+sudo apt-get install -y zbar-tools
+```
 
 Then run :
 
 ```
+roslaunch usb_cam usb_cam-test.launch
+
 rosrun qr_code_reader qr_reader
 ```
 
