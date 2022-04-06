@@ -15,8 +15,7 @@ cv_bridge
 image_transport
 )
 
-find_package(OpenCV 4 REQUIRED)
-
+find_package(OpenCV  REQUIRED)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -144,7 +143,7 @@ add_executable(camera_subscriber src/camera_subscriber.cpp)
 target_link_libraries(camera_subscriber ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 add_executable(qr_reader src/reader.cpp)
-target_link_libraries(qr_reader ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+target_link_libraries(qr_reader ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${ZBAR_LIBRARIES} zbar)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
