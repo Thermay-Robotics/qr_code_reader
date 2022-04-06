@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 
   image_transport::ImageTransport it(nh);
   // Change topic depending on your camera
-  image_transport::Subscriber sub = it.subscribe("/camera/color/image_raw", 1, imageCallback);
+  image_transport::Subscriber sub = it.subscribe("/usb_cam/image_raw", 1, imageCallback);
   ros::spin();
   cv::destroyWindow("view");
 }
