@@ -69,10 +69,6 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 
     decode(img_mat, decodedObjects);
 
-    for(auto code : decodedObjects){
-      cout << code.data << endl;
-    }
-
     imshow("view", img_mat);
 
     waitKey(30);
