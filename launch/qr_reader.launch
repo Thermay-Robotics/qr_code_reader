@@ -1,0 +1,4 @@
+<launch>
+
+    <node name="camera_node" pkg="qr_code_reader" type="qr_reader" output="screen"/>
+</launch>
