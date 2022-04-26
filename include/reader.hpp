@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <vector>
 #include <zbar.h>
+#include <cmath>
 
 #include <opencv2/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -14,6 +15,8 @@
 
 // Include message
 #include "qr_code_reader/qr_msg.h"
+
+// TODO add distance to msg
 
 class Reader
 {
@@ -24,19 +27,11 @@ private:
     image_transport::ImageTransport it;
 
     void imageCallback(const sensor_msgs::ImageConstPtr& msg); 
-
 public:
     Reader(/* args */);
     ~Reader(){ cv::destroyAllWindows(); };
 
-    typedef struct
-    {
-        std::string type;
-        std::string data;
-        std::vector <cv::Point> location; 
-    }decodedObject;
-
-    void decode(cv::Mat &im, std::vector<decodedObject>&decodedObjects);
+    void decode(cv::Mat &im);
 };
 
 
