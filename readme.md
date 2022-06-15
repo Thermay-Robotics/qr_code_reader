@@ -8,7 +8,7 @@
 ``` cd catkin_ws``` 
 ``` catkin_make ```
 
-# Commands
+# Run
 
 * launch roscore
 
@@ -48,5 +48,18 @@ roslaunch usb_cam usb_cam-test.launch
 
 rosrun qr_code_reader qr_reader
 ```
+
+# Launch 
+
+To launch the package, use the following command :
+
+```roslaunch qr_code_reader qr_reader.launch```
+
+
+To launch with the camera, you can use the following command :
+
+```roslaunch qr_code_reader qr_reader_camera.launch```
+
+
 
 you should see the data associated to qr code(s) on the terminal.
