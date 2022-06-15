@@ -26,12 +26,13 @@ private:
     image_transport::Subscriber camera_sub;
     image_transport::ImageTransport it;
 
-    void imageCallback(const sensor_msgs::ImageConstPtr& msg); 
+    std::string camera_topic;
+
+    void imageCallback(const sensor_msgs::ImageConstPtr &msg);
+
 public:
     Reader(/* args */);
-    ~Reader(){ cv::destroyAllWindows(); };
+    ~Reader() { cv::destroyAllWindows(); };
 
     void decode(cv::Mat &im);
 };
-
-
