@@ -1,4 +1,6 @@
 <launch>
+    <include file="$(find realsense2_camera)/launch/rs_camera.launch" />
+
     <arg name="camera" value="/camera/color/image_raw" />
 
     <node name="qr_reader" pkg="qr_code_reader" type="qr_reader" output="screen">
