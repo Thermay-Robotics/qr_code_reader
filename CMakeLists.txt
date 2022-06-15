@@ -58,3 +58,5 @@ target_link_libraries(camera_subscriber ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 add_executable(qr_reader src/main.cpp src/reader.cpp)
 target_link_libraries(qr_reader ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${ZBAR_LIBRARIES} zbar)
+
+add_dependencies(qr_reader ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
