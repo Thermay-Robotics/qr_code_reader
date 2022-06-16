@@ -46,7 +46,7 @@ First you need to install zbar library
 
 ```
 sudo apt-get install ros-(distro)-usb-cam
-sudo apt-get install -y zbar-tools
+sudo apt-get install -y libzbar-dev
 ```
 
 Then run :
