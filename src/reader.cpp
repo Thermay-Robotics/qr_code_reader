@@ -4,6 +4,7 @@ Reader::Reader() : it(nh)
 {
   cv::namedWindow("view");
   nh.getParam("/qr_reader/camera_topic", camera_topic);
+  nh.getParam("/qr_reader/viewer", viewer);
 
   qr_pub = nh.advertise<qr_code_reader::qr_msg>("/QrCodeMsg", 1000);
   camera_sub = it.subscribe(camera_topic, 1, &Reader::imageCallback, this);
@@ -62,7 +63,8 @@ void Reader::imageCallback(const sensor_msgs::ImageConstPtr &msg)
 
     decode(img_mat);
 
-    cv::imshow("view", img_mat);
+    if (viewer)
+      cv::imshow("view", img_mat);
 
     cv::waitKey(30);
   }

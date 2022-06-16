@@ -2,8 +2,10 @@
     <include file="$(find realsense2_camera)/launch/rs_camera.launch" />
 
     <arg name="camera" value="/camera/color/image_raw" />
+    <arg name="viewer" value="false" />
 
     <node name="qr_reader" pkg="qr_code_reader" type="qr_reader" output="screen">
         <param name="camera_topic" value="$(arg camera)"/>
+        <param name="viewer" value="$(arg viewer)"/>
     </node>
 </launch>

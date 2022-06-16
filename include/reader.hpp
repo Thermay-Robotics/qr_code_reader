@@ -27,6 +27,7 @@ private:
     image_transport::ImageTransport it;
 
     std::string camera_topic;
+    bool viewer;
 
     void imageCallback(const sensor_msgs::ImageConstPtr &msg);
 
