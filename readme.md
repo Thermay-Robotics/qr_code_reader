@@ -8,6 +8,14 @@
 ``` cd catkin_ws``` 
 ``` catkin_make ```
 
+# Subscribed topics
+
+* Camera topic
+
+# Published topics
+
+* ```/QrCodeMsg```
+
 # Run
 
 * launch roscore
